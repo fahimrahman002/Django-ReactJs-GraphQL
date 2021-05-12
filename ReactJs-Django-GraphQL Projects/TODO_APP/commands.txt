@@ -1,0 +1,20 @@
+//For ReactJs
+mkdir frontend
+cd frontend
+npx create-react-app .
+#if public,src folders are not created follow https://stackoverflow.com/questions/59260031/public-src-and-scripts-folder-not-created-while-using-create-react-app
+npm install @apollo/client graphql
+npm install @material-ui/core
+
+
+
+//For Django (windows)
+mkdir backend
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install django
+django-admin startproject core .
+py manage.py startapp todo
+py manage.py runsever
+pip install django-cors-headers
