@@ -9,3 +9,10 @@
 docker-compose build
 docker-compose up
 ```
+## How to run react app?
+- Open command prompt & goto 'frontend' folder and enter the following commands:
+```sh
+@cd frontend
+npm install
+npm start
+```
