@@ -1,5 +1,4 @@
-import { gql, query, useMutation, useQuery } from "@apollo/client";
-import React, { useEffect, useState } from "react";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import {
   Avatar,
   Box,
@@ -14,13 +13,18 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
+import React, { useState } from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+
 const App = () => {
   const [title, setTitle] = useState("");
   const [id, setTodoId] = useState(null);
   const [editTodo, setEditTodo] = useState(false);
   const { loading, error, data } = useQuery(GetTodoQuery);
+  const { loading: userloding, error: usererror, data: userdata } = useQuery(
+    GET_USER_DATA
+  );
   const [createTodo] = useMutation(AddTodoMutation, {
     onCompleted(data) {
       setTitle("");
@@ -44,7 +48,7 @@ const App = () => {
   const addNewTodo = () => {
     createTodo({ variables: { title: title } });
   };
-  const editButtonHandeler = (id,title) => {
+  const editButtonHandler = (id,title) => {
     setTitle(title);
     setEditTodo(true);
     setTodoId(id);
@@ -55,12 +59,19 @@ const App = () => {
   const updateATodo=()=>{
     updateTodo({variables:{id,title}});
   }
+  const logoutNow = () => {
+    window.localStorage.clear();
+    window.location.href = "/";
+  };
   if (loading) return <h1>Loading..</h1>;
   if (error) return <h1>Error..</h1>;
   return (
     <Container>
-      <Typography align="center" variant="h3">
-        Todo App
+       <Typography align="center" variant="h3">
+        Welcome to Todo App "{userdata?.user?.username}"
+        <Button color="secondary" variant="contained" onClick={logoutNow}>
+          Logout
+        </Button>
       </Typography>
       <Box
         style={{
@@ -117,7 +128,7 @@ const App = () => {
               </ListItemIcon>
               <ListItemText primary={item?.title} />
               <ListItemSecondaryAction>
-                <IconButton onClick={() => editButtonHandeler(item?.id,item?.title)}>
+                <IconButton onClick={() => editButtonHandler(item?.id,item?.title)}>
                   <EditIcon color="primary" />
                 </IconButton>
                 <IconButton>
@@ -163,10 +174,18 @@ mutation UpdateTodo($id:Int!,$title: String!) {
 }
 `;
 const DeleteTodoMutation=gql`
-mutation DeteteTodo($id:Int!) {
+mutation DeleteTodo($id:Int!) {
   deleteTodo(id:$id) {
     message
   }
 }
+`;
+const GET_USER_DATA = gql`
+  {
+    user {
+      id
+      username
+    }
+  }
 `;
 export default App;

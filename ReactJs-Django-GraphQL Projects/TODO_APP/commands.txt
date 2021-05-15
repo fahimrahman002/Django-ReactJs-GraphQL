@@ -5,7 +5,7 @@ npx create-react-app .
 #if public,src folders are not created follow https://stackoverflow.com/questions/59260031/public-src-and-scripts-folder-not-created-while-using-create-react-app
 npm install @apollo/client graphql
 npm install @material-ui/core
-
+npm start
 
 
 //For Django (windows)
@@ -13,8 +13,16 @@ mkdir backend
 cd backend
 python -m venv venv
 venv\Scripts\activate
+python -m pip install --upgrade pip
+pip install setuptools --upgrade
 pip install django
 django-admin startproject core .
 py manage.py startapp todo
-py manage.py runsever
+py manage.py runserver
 pip install django-cors-headers
+pip freeze>requirements.txt
+pip install -r requirements.txt
+
+@ Docker commands
+docker-compose build
+docker-compose up
