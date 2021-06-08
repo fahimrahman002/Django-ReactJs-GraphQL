@@ -26,3 +26,10 @@ pip install -r requirements.txt
 @ Docker commands
 docker-compose build
 docker-compose up
+
+@ Quick start
+cd frontend
+npm start
+cd backend
+venv\Scripts\activate
+py manage.py runserver

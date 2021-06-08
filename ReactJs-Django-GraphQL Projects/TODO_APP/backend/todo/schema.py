@@ -3,6 +3,7 @@ from .models import Todo
 from graphene_django import DjangoObjectType
 from graphql_jwt.decorators import login_required
 from django.contrib.auth import get_user_model
+import graphql_social_auth
 
 class TodoType(DjangoObjectType):
     class Meta:
@@ -90,9 +91,12 @@ class CreateUser(graphene.Mutation):
         user.save()
         return CreateUser(user=user)
 
+# class SocialAuth(graphene.ObjectType):
+#     social_auth = graphql_social_auth.SocialAuth.Field()
 
 class Mutation(graphene.ObjectType):
     create_todo=CreateTodo.Field()
     update_todo=UpdateTodo.Field()
     delete_todo=DeleteTodo.Field()
     create_user=CreateUser.Field()
+    social_auth = graphql_social_auth.SocialAuthJWT.Field()

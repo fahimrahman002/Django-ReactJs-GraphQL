@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import gql from "graphql-tag";
 import React, { useState } from "react";
-
+import GoogleLogin from "react-google-login";
 const AuthPage = () => {
   const [registerNow, setRegisterNow] = useState(false);
   const [username, setUsername] = useState("");
@@ -26,21 +26,19 @@ const AuthPage = () => {
       }
     },
   });
-  const [
-    createUser,
-    { loading: registerLoading, error: registerError },
-  ] = useMutation(REGISTER_NEW_USER, {
-    onCompleted(data) {
-      if (data.createUser.user.username) {
-        alert(
-          `User Was Created For User Name "${data.createUser.user.username}"`
-        );
-        setRegisterNow(false);
-      } else {
-        alert("Something Wrong. Try Again!!");
-      }
-    },
-  });
+  const [createUser, { loading: registerLoading, error: registerError }] =
+    useMutation(REGISTER_NEW_USER, {
+      onCompleted(data) {
+        if (data.createUser.user.username) {
+          alert(
+            `User Was Created For User Name "${data.createUser.user.username}"`
+          );
+          setRegisterNow(false);
+        } else {
+          alert("Something Wrong. Try Again!!");
+        }
+      },
+    });
   const loginNow = () => {
     tokenAuth({ variables: { username: username, password: password1 } });
   };
@@ -50,6 +48,10 @@ const AuthPage = () => {
     } else {
       alert("Two Password Not Matched, Try Again!");
     }
+  };
+  const responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj);
   };
   return (
     <Container>
@@ -131,6 +133,22 @@ const AuthPage = () => {
               </Button>
             </>
           )}
+        </Box>
+        <Box
+          style={{
+            margin: "20px auto",
+          }}
+        >
+          <>
+            <Button onClick={() => setRegisterNow(true)}>Or Login with</Button>
+            <GoogleLogin
+              clientId="290918475256-h94tjiqr5ljlt37ud4ovv0nmteae0hqg.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={"single_host_origin"}
+            />
+          </>
         </Box>
       </Grid>
     </Container>
